@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,21 +17,6 @@ const Settings = () => {
     const savedConfig = localStorage.getItem('apiConfig');
     return savedConfig ? JSON.parse(savedConfig).apiToken : '';
   });
-
-  // Check for password on component mount
-  useEffect(() => {
-    const verifyAccess = () => {
-      const password = prompt('Por favor, confirme a senha para acessar as configurações:');
-      const correctPassword = 'Spectr@2025!';
-      
-      if (password !== correctPassword) {
-        toast.error('Senha incorreta! Redirecionando para a página inicial.');
-        navigate('/');
-      }
-    };
-    
-    verifyAccess();
-  }, [navigate]);
   
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();

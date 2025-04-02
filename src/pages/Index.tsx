@@ -2,9 +2,18 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { PlusCircle, Settings, Sun, Moon } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle,
+  DialogFooter,
+  DialogDescription
+} from "@/components/ui/dialog";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -13,6 +22,9 @@ const Index = () => {
     const savedTheme = localStorage.getItem('theme');
     return savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
   });
+
+  const [showPasswordDialog, setShowPasswordDialog] = useState(false);
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     // Apply dark mode class to document
@@ -30,11 +42,15 @@ const Index = () => {
   };
 
   const handleGoToSettings = () => {
-    // Prompt for password
-    const password = prompt('Por favor, digite a senha para acessar as configurações:');
+    setShowPasswordDialog(true);
+  };
+
+  const handlePasswordSubmit = () => {
     const correctPassword = 'Spectr@2025!';
     
     if (password === correctPassword) {
+      setShowPasswordDialog(false);
+      setPassword('');
       navigate('/settings');
     } else {
       toast.error('Senha incorreta!');
@@ -51,20 +67,6 @@ const Index = () => {
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-[#ccd6e0] mb-2">Sistema de Ocorrências</h1>
           <p className="text-gray-600 dark:text-[#ccd6e0]/80 mb-6">Registre e gerencie ocorrências de forma simples e rápida</p>
-        </div>
-        
-        {/* Dark Mode Toggle */}
-        <div className="flex items-center justify-center space-x-2 py-2">
-          <Sun className="h-5 w-5 text-gray-500 dark:text-[#ccd6e0]" />
-          <Switch 
-            checked={darkMode} 
-            onCheckedChange={toggleDarkMode}
-            className={darkMode ? "bg-[#00674F]" : ""}
-          />
-          <Moon className="h-5 w-5 text-gray-500 dark:text-[#ccd6e0]" />
-          <span className="text-sm text-gray-500 dark:text-[#ccd6e0]/80 ml-2">
-            {darkMode ? "Modo Noturno" : "Modo Dia"}
-          </span>
         </div>
         
         <div className="space-y-4">
@@ -84,8 +86,63 @@ const Index = () => {
             <Settings className="h-5 w-5 mr-2" />
             Configurações
           </Button>
+          
+          {/* Dark Mode Toggle moved below settings button */}
+          <div className="flex items-center justify-center space-x-2 py-2 mt-4 border border-gray-200 dark:border-[#ccd6e0]/20 rounded-md p-3">
+            <Sun className="h-5 w-5 text-gray-500 dark:text-[#ccd6e0]" />
+            <Switch 
+              checked={darkMode} 
+              onCheckedChange={toggleDarkMode}
+              className={darkMode ? "bg-[#00674F]" : ""}
+            />
+            <Moon className="h-5 w-5 text-gray-500 dark:text-[#ccd6e0]" />
+            <span className="text-sm text-gray-500 dark:text-[#ccd6e0]/80 ml-2">
+              {darkMode ? "Modo Noturno" : "Modo Dia"}
+            </span>
+          </div>
         </div>
       </div>
+
+      {/* Password Dialog */}
+      <Dialog open={showPasswordDialog} onOpenChange={setShowPasswordDialog}>
+        <DialogContent className="sm:max-w-md dark:bg-[#212633] dark:text-[#ccd6e0]">
+          <DialogHeader>
+            <DialogTitle>Acesso às Configurações</DialogTitle>
+            <DialogDescription className="dark:text-[#ccd6e0]/70">
+              Digite a senha para acessar as configurações do sistema.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            <Input
+              type="password"
+              placeholder="Digite a senha"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="dark:bg-[#181a24] dark:text-[#ccd6e0] dark:border-[#ccd6e0]/20"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handlePasswordSubmit();
+                }
+              }}
+            />
+          </div>
+          <DialogFooter>
+            <Button 
+              variant="outline" 
+              onClick={() => setShowPasswordDialog(false)}
+              className="dark:text-[#ccd6e0] dark:border-[#ccd6e0]/20"
+            >
+              Cancelar
+            </Button>
+            <Button 
+              onClick={handlePasswordSubmit}
+              className="bg-[#00674F] hover:bg-[#00674F]/90"
+            >
+              Confirmar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
