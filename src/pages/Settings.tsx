@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,8 +8,30 @@ import { toast } from "sonner";
 
 const Settings = () => {
   const navigate = useNavigate();
-  const [apiUrl, setApiUrl] = useState('');
-  const [apiToken, setApiToken] = useState('');
+  const [apiUrl, setApiUrl] = useState(() => {
+    const savedConfig = localStorage.getItem('apiConfig');
+    return savedConfig ? JSON.parse(savedConfig).apiUrl : '';
+  });
+  
+  const [apiToken, setApiToken] = useState(() => {
+    const savedConfig = localStorage.getItem('apiConfig');
+    return savedConfig ? JSON.parse(savedConfig).apiToken : '';
+  });
+
+  // Check for password on component mount
+  useEffect(() => {
+    const verifyAccess = () => {
+      const password = prompt('Por favor, confirme a senha para acessar as configurações:');
+      const correctPassword = 'Spectr@2025!';
+      
+      if (password !== correctPassword) {
+        toast.error('Senha incorreta! Redirecionando para a página inicial.');
+        navigate('/');
+      }
+    };
+    
+    verifyAccess();
+  }, [navigate]);
   
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,44 +41,44 @@ const Settings = () => {
       return;
     }
     
-    // Here you would typically save the settings to local storage or similar
     localStorage.setItem('apiConfig', JSON.stringify({ apiUrl, apiToken }));
     toast.success("Configurações salvas com sucesso!");
     navigate('/');
   };
   
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg p-6">
+    <div className="min-h-screen bg-gray-100 dark:bg-[#181a24] p-4 transition-colors duration-300">
+      <div className="max-w-md mx-auto bg-white dark:bg-[#212633] rounded-lg shadow-lg p-6 transition-colors duration-300">
         <div className="flex items-center mb-6">
           <Button 
             variant="ghost" 
-            className="p-2"
+            className="p-2 dark:text-[#ccd6e0] dark:hover:bg-[#212633]/50"
             onClick={() => navigate('/')}
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-2xl font-bold ml-2">Configurações</h1>
+          <h1 className="text-2xl font-bold ml-2 text-gray-900 dark:text-[#ccd6e0]">Configurações</h1>
         </div>
         
         <form onSubmit={handleSave} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              URL da API <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium text-gray-700 dark:text-[#ccd6e0] mb-1">
+              URL da API <span className="text-red-500 dark:text-[#660033]">*</span>
             </label>
             <Input 
               value={apiUrl} 
               onChange={(e) => setApiUrl(e.target.value)}
               placeholder="https://api.exemplo.com" 
               required
+              className="dark:bg-[#181a24] dark:text-[#ccd6e0] dark:border-[#ccd6e0]/20"
             />
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-gray-500 dark:text-[#ccd6e0]/70">
               Informe a URL completa da API para envio das ocorrências
             </p>
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-[#ccd6e0] mb-1">
               Token de Autenticação
             </label>
             <Input 
@@ -64,8 +86,9 @@ const Settings = () => {
               onChange={(e) => setApiToken(e.target.value)}
               placeholder="Token de acesso à API" 
               type="password"
+              className="dark:bg-[#181a24] dark:text-[#ccd6e0] dark:border-[#ccd6e0]/20"
             />
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-gray-500 dark:text-[#ccd6e0]/70">
               Informe o token de autenticação se a API exigir
             </p>
           </div>
@@ -73,7 +96,7 @@ const Settings = () => {
           <div className="pt-4">
             <Button 
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700"
+              className="w-full bg-[#00674F] hover:bg-[#00674F]/90"
             >
               <Save className="h-4 w-4 mr-2" /> Salvar Configurações
             </Button>
