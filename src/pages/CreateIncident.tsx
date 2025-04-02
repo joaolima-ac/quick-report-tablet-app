@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Send, X, Ambulance, Shield, Heart, MoreHorizontal } from "lucide-react";
+import { ArrowLeft, Send, X, Ambulance, Shield, Home, MoreHorizontal } from "lucide-react";
 import { toast } from "sonner";
 import { 
   Select,
@@ -112,7 +112,7 @@ const CreateIncident = () => {
       case 'security':
         return <Shield className="h-4 w-4 text-blue-500" />;
       case 'domestic':
-        return <Heart className="h-4 w-4 text-[#660033]" />;
+        return <Home className="h-4 w-4 text-[#660033]" />;
       default:
         return <MoreHorizontal className="h-4 w-4 text-gray-500" />;
     }
@@ -176,7 +176,7 @@ const CreateIncident = () => {
               <div className="flex items-center space-x-2 border border-gray-200 dark:border-[#ccd6e0]/20 rounded-lg p-3 hover:bg-gray-50 dark:hover:bg-[#181a24]/70 transition-colors">
                 <RadioGroupItem value="domestic" id="domestic" />
                 <Label htmlFor="domestic" className="flex items-center cursor-pointer">
-                  <Heart className="h-5 w-5 mr-2 text-[#660033]" />
+                  <Home className="h-5 w-5 mr-2 text-[#660033]" />
                   <span className="dark:text-[#ccd6e0]">Emergência de Violência Doméstica</span>
                 </Label>
               </div>
@@ -260,7 +260,7 @@ const CreateIncident = () => {
             
             <Button 
               type="submit"
-              className="w-1/2 ml-2 bg-[#00674F] hover:bg-[#00674F]/90"
+              className="w-1/2 ml-2 bg-[#0EA5E9] hover:bg-[#0EA5E9]/90"
               disabled={isSubmitting}
             >
               <Send className="h-4 w-4 mr-2" /> {isSubmitting ? 'Enviando...' : 'Enviar'}

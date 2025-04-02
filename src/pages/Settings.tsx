@@ -81,7 +81,7 @@ const Settings = () => {
           <div className="pt-4">
             <Button 
               type="submit"
-              className="w-full bg-[#00674F] hover:bg-[#00674F]/90"
+              className="w-full bg-[#0EA5E9] hover:bg-[#0EA5E9]/90"
             >
               <Save className="h-4 w-4 mr-2" /> Salvar Configurações
             </Button>

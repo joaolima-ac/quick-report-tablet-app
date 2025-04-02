@@ -71,7 +71,7 @@ const Index = () => {
         
         <div className="space-y-4">
           <Button
-            className="w-full h-14 text-lg flex items-center justify-center gap-2 bg-[#00674F] hover:bg-[#00674F]/90 dark:bg-[#00674F] dark:hover:bg-[#00674F]/80"
+            className="w-full h-14 text-lg flex items-center justify-center gap-2 bg-[#0EA5E9] hover:bg-[#0EA5E9]/90 dark:bg-[#0EA5E9] dark:hover:bg-[#0EA5E9]/80"
             onClick={handleCreateIncident}
           >
             <PlusCircle className="h-6 w-6" />
@@ -93,7 +93,7 @@ const Index = () => {
             <Switch 
               checked={darkMode} 
               onCheckedChange={toggleDarkMode}
-              className={darkMode ? "bg-[#00674F]" : ""}
+              className={darkMode ? "bg-[#0EA5E9]" : ""}
             />
             <Moon className="h-5 w-5 text-gray-500 dark:text-[#ccd6e0]" />
             <span className="text-sm text-gray-500 dark:text-[#ccd6e0]/80 ml-2">
@@ -136,7 +136,7 @@ const Index = () => {
             </Button>
             <Button 
               onClick={handlePasswordSubmit}
-              className="bg-[#00674F] hover:bg-[#00674F]/90"
+              className="bg-[#0EA5E9] hover:bg-[#0EA5E9]/90"
             >
               Confirmar
             </Button>
